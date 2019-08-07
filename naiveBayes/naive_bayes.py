@@ -40,8 +40,9 @@ class naiveBayes:
                     if self.p_condition.get((j,m,n))==None:
                         self.p_condition[(j,m,n)]=self.lambda_/(count_y[key[1]]+Sj*self.lambda_)
 
-    def predict(self,X):
-        #计算联合概率
+    def predict_point(self,X):
+        #输入为一个实例
+        #计算联合概率        
         p_post=defaultdict()
         for y,py in self.p_prior.items():
             p_joint=py
@@ -49,6 +50,17 @@ class naiveBayes:
                 p_joint*=self.p_condition[(j,xj,y)]#条件独立性假设
             p_post[y]=p_joint#后验概率（忽略分母）
         return max(p_post,key=p_post.get)
+    
+    def predict(self,X):
+        #输入为实例集合
+        post=[]
+        if len(X.shape)==1:
+            post.append(self.predict_point(X))
+        else:
+            for j in range(X.shape[0]):
+                Xj=X[j,:]
+                post.append(self.predict_point(Xj))
+        return post
 
 def load_txt(path,sep='\t'):
     data=[]
@@ -102,7 +114,8 @@ if __name__=='__main__':
     #print(clf.p_condition)
 
     #预测
-    x=np.array([2,'S'])
+    #x=np.array([2,'S'])
+    x= np.array([[1, 'S'], [1, 'M'], [1, 'M']])
     result=clf.predict(x)
     print(result)
 
