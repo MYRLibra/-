@@ -51,7 +51,7 @@ class dualPerceptron:
         a[i]+=self.eta_
         b+=self.eta_*y
 
-    def cal_wb(self,x_data,y_data):
+    def cal_wb(self,x_data,y_data):#另外一种计算w,b的方式
         global a,b
         w=[0]*(x_data.shape[1])
         h = 0
@@ -60,7 +60,7 @@ class dualPerceptron:
             w +=a[i]*y_data[i]*x_data[i]
         print (w,h)
     
-    def cal_w(self,x_data,y_data):
+    def cal_w(self,x_data,y_data):#通过参数alpha计算得到w
         global a,b
         w=[0]*(x_data.shape[1])
         for i in range(x_data.shape[1]):
